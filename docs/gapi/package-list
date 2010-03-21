@@ -1,0 +1,8 @@
+DefaultPackage
+grails-app.conf
+grails-app.controllers.org.codehaus.groovy.grails.plugins.qrcode
+grails-app.taglib.org.codehaus.groovy.grails.plugins.qrcode
+scripts
+src.groovy.org.codehaus.groovy.grails.plugins.qrcode
+unzipped
+unzipped.scripts

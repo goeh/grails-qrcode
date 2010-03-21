@@ -1,0 +1,22 @@
+<plugin name='qrcode' version='0.1' grailsVersion='1.2.1 &gt; *'>
+  <author>Shawn Hartsock</author>
+  <authorEmail>hartsock@acm.org</authorEmail>
+  <title>QR Code plugin</title>
+  <description>\
+This plugin allows you to create QR codes as part of your Grails
+application.</description>
+  <documentation>http://grails.org/plugin/qrcode</documentation>
+  <resources>
+    <resource>BuildConfig</resource>
+    <resource>DataSource</resource>
+    <resource>UrlMappings</resource>
+    <resource>org.codehaus.groovy.grails.plugins.qrcode.QrcodeController</resource>
+    <resource>org.codehaus.groovy.grails.plugins.qrcode.QrcodeTagLib</resource>
+  </resources>
+  <dependencies>
+    <resolvers>
+      <resolver type='grailsPlugins' name='grailsPlugins' />
+    </resolvers>
+  </dependencies>
+  <behavior />
+</plugin>
