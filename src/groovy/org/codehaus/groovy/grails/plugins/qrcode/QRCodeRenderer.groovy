@@ -19,38 +19,25 @@ import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.common.ByteMatrix
 
-import java.awt.Color
-import java.awt.image.BufferedImage
-import java.awt.Graphics2D
-import java.awt.image.renderable.ParameterBlock
-import java.awt.Rectangle
-import java.awt.image.AffineTransformOp
-import java.awt.geom.AffineTransform
-
-import javax.media.jai.JAI
-import javax.media.jai.PlanarImage
+import ar.com.hjg.pngj.ImageInfo
+import ar.com.hjg.pngj.PngWriter
+import ar.com.hjg.pngj.ImageLine
 
 /**
  * @author "Shawn Hartsock" <hartsock@acm.org>
 
  * This class uses the native JDK and Groovy libraries to render the
  * byte matrix returned by the QRCodeWriter in the ZXing libraries
- * as a java.awt.image.RenderedImage which you may then use with
- * the javax.media.jai.JAI libraries to render as another format.
+ * using the PngWriter libraries provided by pngj. These libraries
+ * use only white listed Google Approved classes to create PNG images.
  *
  * The object is defined with sensible defaults that you may choose
  * to override in your constructor.
- *
- * blockColor: color code in hex for the blocks default: black
- * backgroundColor: color code in hex for the background default: white
  *
  */
 class QRCodeRenderer {
   QRCodeWriter qrcodeWriter = new QRCodeWriter()
   BarcodeFormat format = BarcodeFormat.QR_CODE
-
-  String blockColor = "#000000"
-  String backgroundColor = "#FFFFFF"
 
   /**
    * Determines the size of the data matrix we will need
@@ -68,32 +55,14 @@ class QRCodeRenderer {
     return size
   }
 
-
-   /*
-    * Draws a simple block (not useful outside this class
-    */
-  private void drawBlock(Graphics2D graphics, Color color, int x, int y, int w = 1, int h = 1) {
-    def block = new Rectangle(w, h)
-    block.setLocation(x, y)
-    graphics.setColor(color)
-    graphics.draw(block)
-    graphics.fill(block)
-  }
-
   /**
-   * Creates a 1 pixel = 1 block QRCode image containing the data you specify.
+   * Renders the data supplied in a QRCode of the pixel size (width == height)
+   * on the output stream you specify as a PNG.
    */
-  java.awt.image.RenderedImage render(String data) {
-    long size = calculateMatrixSize(data)
-    render(data, size)
-  }
-
-  java.awt.image.RenderedImage render(String data, Long width) {
-    render(data, width, width)
-  }
-
-  java.awt.image.RenderedImage render(String data, Long width, Long height) {
-    render(data, width.intValue(), height.intValue())
+  void renderPng(String data, int requestedSize, OutputStream outputStream) {
+    int size = calculateMatrixSize(data)
+    ByteMatrix matrix = qrcodeWriter.encode(data, format, size, size)
+    renderMatrix(matrix, requestedSize, outputStream)
   }
 
   /**
@@ -102,67 +71,56 @@ class QRCodeRenderer {
    * That means if your data takes 30 bytes and you ask for a 16x16 image the
    * renderer will ignore your scale requests and simply report the smallest image
    * it possibly can.
-   *
-   * Choose square width and height please.
    */
-  java.awt.image.RenderedImage render(String data, int width, int height) {
-    // first we render the matrix completely unscaled. One pixel per byte.
-    int size = calculateMatrixSize(data)
-    ByteMatrix matrix = qrcodeWriter.encode(data, format, size, size)
+  void renderMatrix(ByteMatrix matrix, int size, OutputStream outputStream) {
+    assert size > 0
+    int cols = matrix.width
+    double scale = size / cols;
 
-    // NEVER allow the user to request an image smaller than the minimum pixels
-    // needed to render one bit per pixel from our byte matrix.
-    double scaleX = width/matrix.width
-    if(scaleX < 1.0d) { scaleX = 1.0d }
-    double scaleY = height/matrix.height
-    if(scaleY < 1.0d) { scaleY = 1.0d }
+    // setup the image preamble
+    def imageInfo = new ImageInfo(size, size, 16, true, false, false)
+    PngWriter png = new PngWriter((OutputStream) outputStream, imageInfo)
+    png.txtInfo.title = "QRCode"
+    png.txtInfo.author = "Shawn Hartsock"
+    png.txtInfo.software = "Grails QRCode Plugin"
+    png.txtInfo.source = this.getClass().getCanonicalName()
+    png.txtInfo.comment = "Uses ZXing (http://code.google.com/p/zxing/) and pngj (http://code.google.com/p/pngj/)"
 
-    def backgroundCode = "0x${backgroundColor.replace('#', '')}"
-    Color backgroundColor = Color.decode(backgroundCode)
-
-    def colorCode = "0x${blockColor.replace('#', '')}"
-    Color blockColor = Color.decode(colorCode)
-
-    // generate an image stream, clear it then set up for rendering the matrix.
-    BufferedImage image = new BufferedImage(matrix.width, matrix.height, BufferedImage.TYPE_INT_RGB)
-    Graphics2D graphics = image.graphics
-    graphics.setBackground(backgroundColor)
-    graphics.clearRect(0, 0, width, height)
-
-    // render the matrix, where there's a 0 draw a dark block 
-    for(int y = 0; y < matrix.height; y++) {
-      for(int x = 0; x < matrix.width; x++) {
-        if(matrix.get(x,y) == 0) {
-          drawBlock(graphics, blockColor, x, y)
+    // loop over byte array to render but project
+    // down from the image onto the smaller byte
+    // matrix. Loop "y" on the outside and "x" on
+    // the inside since the byte stream must "draw"
+    // the image one line at a time.
+    ImageLine line = new ImageLine(png.imgInfo)
+    int channels = png.imgInfo.channels;
+    assert channels == 4
+    for (int ii = 0; ii < size; ii++) {
+      int y = ii / scale // truncate
+      line.incRown()
+      for (int jj = 0; jj < size; jj++) {
+        int x = jj / scale // truncate
+        double color = 1.0
+        if (matrix.get(x, y) == 0) {
+          color = 0.0
         }
-        else {
-          drawBlock(graphics, backgroundColor, x, y)
-        }
+        line.setValD(jj * channels, color)
+        line.setValD(jj * channels + 1, color)
+        line.setValD(jj * channels + 2, color)
       }
-    }
-    // the now rendered matrix is one pixel per block. This is usually far too small
-    // to be useful. So we need to scale up the image and then write out
-    AffineTransform transform = new AffineTransform();
-    transform.scale(scaleX,scaleY)
-    graphics.transform(transform)
-
-    AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-    image = op.filter(image, null);
-
-    ParameterBlock pb = new ParameterBlock()
-    pb.add(image)
-    PlanarImage renderedImage = (PlanarImage) JAI.create("awtImage", pb)
-    
-    return renderedImage
+      addAlpha(line)
+      png.writeRow(line)
+    } //*/
+    png.end()
   }
 
-  /**
-   * Renders the data supplied in a QRCode of the pixel size (width == height)
-   * on the output stream you specify as a PNG.
-   */
-  void renderPng(String data, int size, OutputStream outputStream) {
-    def image = render(data,size,size)
-    JAI.create("encode", image, outputStream, "PNG", null)
+  private static void addAlpha(ImageLine line) {
+    for (int i = 0; i < line.imgInfo.cols; i++) {
+      line.setValD(i * 4 + 3, 1.0);
+    }
+  }
+
+  private static double clamp(double d, double d0, double d1) {
+    return d > d1 ? d1 : (d < d0 ? d0 : d);
   }
 
   /**
@@ -170,7 +128,7 @@ class QRCodeRenderer {
    */
   String getPngContentType() { "image/png" }
 
-  void renderPng(response,String data,int size) {
+  void renderPng(response, String data, int size) {
     response.contentType = "image/png"
     renderPng(data, size, response.outputStream)
   }
