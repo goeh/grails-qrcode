@@ -21,21 +21,24 @@ class QrcodeController {
    * Renders a QRCode that contains the Referer URL that you just came from
    */
   def index = {
-    qrcodeRenderer.renderPng(response,request.getHeader("REFERER"), 300i)
+    def referer = request.getHeader("REFERER")
+    String size = getSize(params)
+    String backupText = "This qrcode was rendered by http://grails.org/plugin/qrcode"
+    qrcodeRenderer.renderPng(response,params.url?:params.text?:referer?:backupText, size?.toInteger())
   }
 
   /**
    * Renders a QRCode with the URL specified
    */
   def url = {
-    String uri = params.u
+    String uri = params.u?:params.id?:request.getHeader("REFERER")
     String size = getSize(params)
     qrcodeRenderer.renderPng(response, uri, size.toInteger().intValue())
   }
 
   String getSize(Map params) {
-    String size = params.s
-    if (!size || size.matches(/\D/)) { size = "128"}
+    String size = params.s?:params.size?:params.w?:params.width
+    if (!size || size.matches(/\D/)) { size = "300"}
     return size
   }
 
@@ -44,7 +47,7 @@ class QrcodeController {
    * include iCal or vCard data or whatever you can come up with.
    */
   def text = {
-    String content = params.text
+    String content = params.text?:params.id
     String size = getSize(params)
     qrcodeRenderer.renderPng(response, content, size.toInteger().intValue())
   }
