@@ -36,7 +36,7 @@ class QrcodeController {
     qrcodeRenderer.renderPng(response, uri, size.toInteger().intValue())
   }
 
-  String getSize(Map params) {
+  private String getSize(Map params) {
     String size = params.s?:params.size?:params.w?:params.width
     if (!size || size.matches(/\D/)) { size = "300"}
     return size
@@ -47,7 +47,7 @@ class QrcodeController {
    * include iCal or vCard data or whatever you can come up with.
    */
   def text = {
-    String content = params.text?:params.id
+    String content = params.t?:params.id
     String size = getSize(params)
     qrcodeRenderer.renderPng(response, content, size.toInteger().intValue())
   }
