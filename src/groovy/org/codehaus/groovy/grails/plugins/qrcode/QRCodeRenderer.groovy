@@ -18,6 +18,7 @@ package org.codehaus.groovy.grails.plugins.qrcode
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.common.BitMatrix
+import com.google.zxing.EncodeHintType
 
 import ar.com.hjg.pngj.ImageInfo
 import ar.com.hjg.pngj.PngWriter
