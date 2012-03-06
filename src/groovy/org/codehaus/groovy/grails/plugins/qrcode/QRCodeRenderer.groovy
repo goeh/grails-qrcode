@@ -104,7 +104,7 @@ class QRCodeRenderer {
       for (int jj = 0; jj < size; jj++) {
         int x = jj / scale // truncate
         double color = 1.0
-        if (matrix.get(x, y) == 0) {
+        if (matrix.get(x, y)) {
           color = 0.0
         }
         line.setValD(jj * channels, color)
