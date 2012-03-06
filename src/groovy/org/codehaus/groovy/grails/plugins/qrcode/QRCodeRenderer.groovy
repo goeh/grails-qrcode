@@ -17,7 +17,7 @@ package org.codehaus.groovy.grails.plugins.qrcode
 
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.BarcodeFormat
-import com.google.zxing.common.ByteMatrix
+import com.google.zxing.common.BitMatrix
 
 import ar.com.hjg.pngj.ImageInfo
 import ar.com.hjg.pngj.PngWriter
@@ -60,8 +60,11 @@ class QRCodeRenderer {
    * on the output stream you specify as a PNG.
    */
   void renderPng(String data, int requestedSize, OutputStream outputStream) {
+    Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(2);
+    hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+    
     int size = calculateMatrixSize(data)
-    ByteMatrix matrix = qrcodeWriter.encode(data, format, size, size)
+    BitMatrix matrix = qrcodeWriter.encode(data, format, size, size, hints)
     renderMatrix(matrix, requestedSize, outputStream)
   }
 
@@ -72,7 +75,7 @@ class QRCodeRenderer {
    * renderer will ignore your scale requests and simply report the smallest image
    * it possibly can.
    */
-  void renderMatrix(ByteMatrix matrix, int size, OutputStream outputStream) {
+  void renderMatrix(BitMatrix matrix, int size, OutputStream outputStream) {
     assert size > 0
     int cols = matrix.width
     double scale = size / cols;
