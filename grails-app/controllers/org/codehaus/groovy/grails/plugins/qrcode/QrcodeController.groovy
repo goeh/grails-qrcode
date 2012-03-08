@@ -47,10 +47,9 @@ class QrcodeController {
    * include iCal or vCard data or whatever you can come up with.
    */
   def text = {
-    String content = params['text']?:params.t?:params.id
+    String content = params.text?:params.id
     String size = getSize(params)
     qrcodeRenderer.renderPng(response, content, size.toInteger().intValue())
   }
-
-
+  
 }

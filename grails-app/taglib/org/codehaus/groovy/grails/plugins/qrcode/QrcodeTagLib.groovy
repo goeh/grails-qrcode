@@ -38,10 +38,10 @@ class QrcodeTagLib {
   def image = { attrs ->
     def size = attrs.height?:attrs.width
     String text = attrs.text
-    String src = createLink(controller:'qrcode',action:'text',params:[t:text,s:size])
+    String src = createLink(controller:'qrcode',action:'text',params:[text:text,s:size])
     def mkp = new groovy.xml.MarkupBuilder(out)
     mkp {
-      img(alt:url,src:src)
+      img(alt:text,src:src)
     }
   }
   /**
