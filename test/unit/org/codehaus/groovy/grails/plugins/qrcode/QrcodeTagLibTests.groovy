@@ -1,4 +1,4 @@
-package org.codehous.groovy.grails.plugins.qrcode
+package org.codehaus.groovy.grails.plugins.qrcode
 
 import grails.test.*
 import org.codehaus.groovy.grails.plugins.qrcode.QrcodeController
