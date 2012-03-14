@@ -6,6 +6,7 @@ import org.codehaus.groovy.grails.plugins.testing.GrailsMockHttpServletResponse
 class QrcodeTagLibTests extends GrailsUnitTestCase {
 
     StringWriter out
+    def qrCodeRendererService
     def controller
     def action
     def attributes
@@ -41,6 +42,7 @@ class QrcodeTagLibTests extends GrailsUnitTestCase {
         assertEquals "TEST TEXT", attributes.text
 
         def ctl = new QrcodeController(params: attributes)
+        ctl.qrCodeRendererService = qrCodeRendererService
         ctl.text()
         assertEquals "image/png", ctl.response.contentType
         assertEquals 200, ctl.response.status
