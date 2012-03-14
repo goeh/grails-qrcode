@@ -5,7 +5,7 @@ import org.springframework.core.io.ClassPathResource
 import org.apache.commons.io.IOUtils
 
 class QrcodeControllerTests extends GrailsUnitTestCase {
-    QrCodeRendererService qrCodeRendererService
+    QrCodeService qrCodeRendererService
 
     void testSimpleRender() {
         def qrcodeController = new QrcodeController()

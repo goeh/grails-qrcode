@@ -4,8 +4,8 @@ import grails.test.GrailsUnitTestCase
 import org.springframework.core.io.ClassPathResource
 import org.apache.commons.io.IOUtils
 
-class QrCodeRendererServiceTests extends GrailsUnitTestCase {
-    QrCodeRendererService qrCodeRendererService
+class QrCodeServiceTests extends GrailsUnitTestCase {
+    QrCodeService qrCodeRendererService
     
     void testSimpleRender() {
         // a 30 by 30 png image of the word "test" in a QRCode

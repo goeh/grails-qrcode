@@ -17,7 +17,7 @@ package org.codehaus.groovy.grails.plugins.qrcode
 // NOTE: using closures to maintain backwards compatibility with Grails 1.3.7
 class QrcodeController {
   static final String backupText = "This qrcode was rendered by http://grails.org/plugin/qrcode"
-  QrCodeRendererService qrCodeRendererService
+  QrCodeService qrCodeRendererService
 
   /**
    * Renders a QRCode that contains the Referer URL that you just came from
