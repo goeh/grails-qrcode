@@ -27,6 +27,6 @@ package org.codehaus.groovy.grails.plugins.qrcode
  * request. That's because this POGO is at least as light weight as a Closure
  * and we got new instances of each closure on every request as well.
  */
-class QRCodeRendererService extends QRCodeRenderer {
+class QrCodeRendererService extends QRCodeRenderer {
     static scope = 'prototype'
 }
