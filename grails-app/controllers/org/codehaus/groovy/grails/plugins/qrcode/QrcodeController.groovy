@@ -14,8 +14,10 @@ package org.codehaus.groovy.grails.plugins.qrcode
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// NOTE: using closures to maintain backwards compatibility with Grails 1.3.7
 class QrcodeController {
-  QRCodeRenderer qrcodeRenderer = new QRCodeRenderer()
+  static final String backupText = "This qrcode was rendered by http://grails.org/plugin/qrcode"
+  QRCodeRendererService qrcodeRendererService
 
   /**
    * Renders a QRCode that contains the Referer URL that you just came from
@@ -23,8 +25,7 @@ class QrcodeController {
   def index = {
     def referer = request.getHeader("REFERER")
     String size = getSize(params)
-    String backupText = "This qrcode was rendered by http://grails.org/plugin/qrcode"
-    qrcodeRenderer.renderPng(response,params.url?:params.text?:referer?:backupText, size?.toInteger())
+    qrcodeRendererService.renderPng(response,params.url?:params.text?:referer?:backupText, size?.toInteger())
   }
 
   /**
@@ -33,7 +34,7 @@ class QrcodeController {
   def url = {
     String uri = params.u?:params.id?:request.getHeader("REFERER")
     String size = getSize(params)
-    qrcodeRenderer.renderPng(response, uri, size.toInteger().intValue())
+    qrcodeRendererService.renderPng(response, uri, size.toInteger().intValue())
   }
 
   private String getSize(Map params) {
@@ -49,7 +50,7 @@ class QrcodeController {
   def text = {
     String content = params.text?:params.id
     String size = getSize(params)
-    qrcodeRenderer.renderPng(response, content, size.toInteger().intValue())
+    qrcodeRendererService.renderPng(response, content, size.toInteger().intValue())
   }
   
 }
