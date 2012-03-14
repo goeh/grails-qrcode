@@ -1,3 +1,9 @@
+*.log
+
+.idea/
+
+*.iml
+
 *.zip
 
 *.class
