@@ -15,9 +15,9 @@
  */
 class QrcodeGrailsPlugin {
     // the plugin version
-    def version = "0.2"
+    def version = "0.3"
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "1.2.1 > *"
+    def grailsVersion = "2.0.0 > *"
     // the other plugins this plugin depends on
     def dependsOn = [:]
     // resources that are excluded from plugin packaging
@@ -30,7 +30,7 @@ class QrcodeGrailsPlugin {
     def title = "QR Code plugin"
     def description = '''\\
 This plugin allows you to create QR codes as part of your Grails
-application.'''
+application without the need for an external service.'''
 
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/qrcode"
