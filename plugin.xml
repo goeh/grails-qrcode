@@ -1,10 +1,10 @@
-<plugin name='qrcode' version='0.2' grailsVersion='1.2.1 &gt; *'>
+<plugin name='qrcode' version='0.3' grailsVersion='2.0.0 &gt; *'>
   <author>Shawn Hartsock</author>
   <authorEmail>hartsock@acm.org</authorEmail>
   <title>QR Code plugin</title>
   <description>\
 This plugin allows you to create QR codes as part of your Grails
-application.</description>
+application without the need for an external service.</description>
   <documentation>http://grails.org/plugin/qrcode</documentation>
   <type>QrcodeGrailsPlugin</type>
   <resources>

@@ -25,10 +25,7 @@ class QrcodeTagLib {
     def size = attrs.height?:attrs.width
     String target = request.getRequestURL()
     String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size])
-    def mkp = new groovy.xml.MarkupBuilder(out)
-    mkp {
-      img(alt:url,src:src)
-    }
+    out << """<img class="qrcode" alt="${url}" src="${src}"/>"""
   }
 
   /**
@@ -39,40 +36,37 @@ class QrcodeTagLib {
     def size = attrs.height?:attrs.width
     String text = attrs.text
     String src = createLink(controller:'qrcode',action:'text',params:[text:text,s:size])
-    def mkp = new groovy.xml.MarkupBuilder(out)
-    mkp {
-      img(alt:text,src:src)
-    }
+    out << """<img class="qrcode" alt="${text}" src="${src}"/>"""
   }
-  /**
-   * Example:
-   *  <qrcode:link />
-   */
-  def link = { attrs ->
-    def label = attrs.label?:"qrlink"
-    def size = attrs.height?:attrs.width
-    String target = request.getRequestURL()
-    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size])
-    out << '''<style>
-#qrcodebox span {
+    /**
+     * Example:
+     *  <qrcode:link label="my text" />
+     */
+    def link = { attrs ->
+        def label = attrs.label?:"qrlink"
+        def size = attrs.height?:attrs.width
+        String target = request.getRequestURL()
+        String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size])
+        out << '''<style>
+div.qrcodebox span.qrcodespan {
 	display: none;
 	position: absolute;
 }
 
-#qrcodebox a:hover span {
+div.qrcodebox a.qrcodeLink:hover span.qrcodespan {
 	display: block;
 }
 </style>
 '''
-    def mkp = new groovy.xml.MarkupBuilder(out)
-    mkp {
-      div('id':'qrcodebox') {
-        a('class':'qrcodeLink',href:"javascript:null",label) {
-          span('id':'qrcode') {
-            img(alt:url,src:src)
-          }
-        }
-      }
+        out << """
+    <div class="qrcodebox">
+        <a class="qrcodeLink" href="javascript:null">${label}
+            <span class="qrcodespan">
+                <img class="qrcode" alt="${target}" src="${src}"/>
+            </span>
+        </a>
+    </div>
+"""
     }
-  }
+
 }
