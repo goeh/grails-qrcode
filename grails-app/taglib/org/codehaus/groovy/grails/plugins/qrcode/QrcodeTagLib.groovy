@@ -36,7 +36,7 @@ class QrcodeTagLib {
     def size = attrs.height?:attrs.width
     String text = attrs.text
     String src = createLink(controller:'qrcode',action:'text',params:[text:text,s:size])
-    out << """<img class="qrcode" alt="${text}" src="${src}"/>"""
+    out << """<img class="qrcode ${attrs['class'] ? attrs['class'] : ''}" alt="${attrs.alt ?: text}" src="${src}"/>"""
   }
     /**
      * Example:
