@@ -26,7 +26,7 @@ class QrcodeTagLib {
     String target = request.getRequestURL()
     String encoding = attrs.encoding ?: 'UTF-8'
     String correction = attrs.correction ?: 'L'
-    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size,e:encoding,c:correction])
+    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size,e:encoding,c:correction]).replaceAll('&', '&amp;')
     def mkp = new groovy.xml.MarkupBuilder(out)
     mkp {
       img(alt:url,src:src)
@@ -42,7 +42,7 @@ class QrcodeTagLib {
     String text = attrs.text
     String encoding = attrs.encoding ?: 'UTF-8'
     String correction = attrs.correction ?: 'L'
-    String src = createLink(controller:'qrcode',action:'text',params:[t:text,s:size,e:encoding,c:correction])
+    String src = createLink(controller:'qrcode',action:'text',params:[t:text,s:size,e:encoding,c:correction]).replaceAll('&', '&amp;')
     def mkp = new groovy.xml.MarkupBuilder(out)
     mkp {
       img(alt:url,src:src)
@@ -58,7 +58,7 @@ class QrcodeTagLib {
     String target = request.getRequestURL()
     String encoding = attrs.encoding ?: 'UTF-8'
     String correction = attrs.correction ?: 'L'
-    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size,e:encoding,c:correction])
+    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size,e:encoding,c:correction]).replaceAll('&', '&amp;')
     out << '''<style>
 #qrcodebox span {
 	display: none;
