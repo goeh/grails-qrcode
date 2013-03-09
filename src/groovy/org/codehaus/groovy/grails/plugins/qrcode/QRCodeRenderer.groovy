@@ -61,13 +61,29 @@ class QRCodeRenderer {
    * on the output stream you specify as a PNG.
    */
   void renderPng(String data, int requestedSize, OutputStream outputStream, String characterSet, String errorCorrection) {
-    Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(2)
+    Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>(2)
     hints.put(EncodeHintType.CHARACTER_SET, characterSet)
-    hints.put(EncodeHintType.ERROR_CORRECTION, errorCorrection)
+    hints.put(EncodeHintType.ERROR_CORRECTION, getErrorCorrectionLevel(errorCorrection))
     
     int size = calculateMatrixSize(data)
     BitMatrix matrix = qrcodeWriter.encode(data, format, size, size, hints)
     renderMatrix(matrix, requestedSize, outputStream)
+  }
+  
+  /**
+   * Get ErrorCorrectionLevel from error correction level string.
+   */
+  private static ErrorCorrectionLevel getErrorCorrectionLevel(String errorCorrection) {
+      switch (errorCorrection.toUpperCase()) {
+          case 'M':
+              return ErrorCorrectionLevel.M
+          case 'H':
+              return ErrorCorrectionLevel.H
+          case 'Q':
+              return ErrorCorrectionLevel.Q
+          default:
+              return ErrorCorrectionLevel.L
+      }
   }
 
   /**
