@@ -62,7 +62,7 @@ class QRCodeRenderer {
    */
   void renderPng(String data, int requestedSize, OutputStream outputStream, String characterSet, String errorCorrection) {
     Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>(2)
-    hints.put(EncodeHintType.CHARACTER_SET, characterSet)
+    hints.put(EncodeHintType.CHARACTER_SET, characterSet ?: 'UTF-8')
     hints.put(EncodeHintType.ERROR_CORRECTION, getErrorCorrectionLevel(errorCorrection))
     
     int size = calculateMatrixSize(data)
