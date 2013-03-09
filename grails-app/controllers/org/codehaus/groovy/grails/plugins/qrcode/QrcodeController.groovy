@@ -24,7 +24,7 @@ class QrcodeController {
     def referer = request.getHeader("REFERER")
     String size = getSize(params)
     String backupText = "This qrcode was rendered by http://grails.org/plugin/qrcode"
-    qrcodeRenderer.renderPng(response,params.url?:params.text?:referer?:backupText, size?.toInteger(), params.encoding, params.correction)
+    qrcodeRenderer.renderPng(response,params.url?:params.text?:referer?:backupText, size?.toInteger(), params.e, params.c)
   }
 
   /**
@@ -33,7 +33,7 @@ class QrcodeController {
   def url = {
     String uri = params.u?:params.id?:request.getHeader("REFERER")
     String size = getSize(params)
-    qrcodeRenderer.renderPng(response, uri, size.toInteger().intValue(), params.encoding, params.correction)
+    qrcodeRenderer.renderPng(response, uri, size.toInteger().intValue(), params.e, params.c)
   }
 
   private static String getSize(Map params) {
@@ -49,7 +49,7 @@ class QrcodeController {
   def text = {
     String content = params.t?:params.id
     String size = getSize(params)
-    qrcodeRenderer.renderPng(response, content, size.toInteger().intValue(), params.encoding, params.correction)
+    qrcodeRenderer.renderPng(response, content, size.toInteger().intValue(), params.e, params.c)
   }
 
 
