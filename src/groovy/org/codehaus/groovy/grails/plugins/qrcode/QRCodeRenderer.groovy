@@ -49,7 +49,7 @@ class QRCodeRenderer {
    * NOTE: this does not mean the <b>image</b> is that size.
    * You will have to scale the image up or down to fit.
    */
-  int calculateMatrixSize(String data) {
+  static int calculateMatrixSize(String data) {
     def length = data.length()
     def sqr = Math.sqrt(length)
     int size = Math.round(sqr + 0.5)
@@ -60,9 +60,10 @@ class QRCodeRenderer {
    * Renders the data supplied in a QRCode of the pixel size (width == height)
    * on the output stream you specify as a PNG.
    */
-  void renderPng(String data, int requestedSize, OutputStream outputStream) {
-    Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(2);
-    hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+  void renderPng(String data, int requestedSize, OutputStream outputStream, String characterSet, String errorCorrection) {
+    Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(2)
+    hints.put(EncodeHintType.CHARACTER_SET, characterSet)
+    hints.put(EncodeHintType.ERROR_CORRECTION, errorCorrection)
     
     int size = calculateMatrixSize(data)
     BitMatrix matrix = qrcodeWriter.encode(data, format, size, size, hints)
@@ -130,10 +131,10 @@ class QRCodeRenderer {
   /**
    * A simple helper that reports the proper content type to use for a PNG.
    */
-  String getPngContentType() { "image/png" }
+  static String getPngContentType() { "image/png" }
 
-  void renderPng(response, String data, int size) {
+  void renderPng(response, String data, int size, String characterSet, String errorCorrection) {
     response.contentType = "image/png"
-    renderPng(data, size, response.outputStream)
+    renderPng(data, size, response.outputStream, characterSet, errorCorrection)
   }
 }
