@@ -24,7 +24,9 @@ class QrcodeTagLib {
   def url = { attrs ->
     def size = attrs.height?:attrs.width
     String target = request.getRequestURL()
-    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size])
+    String encoding = attrs.encoding ?: 'UTF-8'
+    String correction = attrs.correction ?: 'L'
+    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size,e:encoding,c:correction])
     def mkp = new groovy.xml.MarkupBuilder(out)
     mkp {
       img(alt:url,src:src)
@@ -38,7 +40,9 @@ class QrcodeTagLib {
   def image = { attrs ->
     def size = attrs.height?:attrs.width
     String text = attrs.text
-    String src = createLink(controller:'qrcode',action:'text',params:[t:text,s:size])
+    String encoding = attrs.encoding ?: 'UTF-8'
+    String correction = attrs.correction ?: 'L'
+    String src = createLink(controller:'qrcode',action:'text',params:[t:text,s:size,e:encoding,c:correction])
     def mkp = new groovy.xml.MarkupBuilder(out)
     mkp {
       img(alt:url,src:src)
@@ -52,7 +56,9 @@ class QrcodeTagLib {
     def label = attrs.label?:"qrlink"
     def size = attrs.height?:attrs.width
     String target = request.getRequestURL()
-    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size])
+    String encoding = attrs.encoding ?: 'UTF-8'
+    String correction = attrs.correction ?: 'L'
+    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size,e:encoding,c:correction])
     out << '''<style>
 #qrcodebox span {
 	display: none;
