@@ -1,4 +1,3 @@
-package org.codehaus.groovy.grails.plugins.qrcode
 /**
  * Copyright (C) 2010 Shawn Hartsock
  *
@@ -15,18 +14,26 @@ package org.codehaus.groovy.grails.plugins.qrcode
  * limitations under the License.
  */
 
+package org.codehaus.groovy.grails.plugins.qrcode
+
+import ar.com.hjg.pngj.ImageLineHelper
+import ar.com.hjg.pngj.ImageLineInt
+import ar.com.hjg.pngj.chunks.PngChunkTextVar
+import ar.com.hjg.pngj.chunks.PngMetadata
+
+
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.common.BitMatrix
 
 import ar.com.hjg.pngj.ImageInfo
 import ar.com.hjg.pngj.PngWriter
-import ar.com.hjg.pngj.ImageLine
 import com.google.zxing.EncodeHintType
 
 /**
  * @author "Shawn Hartsock" <hartsock@acm.org>
-
+ * @author "Goran Ehrsson" <goran@technipelago.se>
+ *
  * This class uses the native JDK and Groovy libraries to render the
  * byte matrix returned by the QRCodeWriter in the ZXing libraries
  * using the PngWriter libraries provided by pngj. These libraries
@@ -84,47 +91,43 @@ class QRCodeRenderer {
     // setup the image preamble
     def imageInfo = new ImageInfo(size, size, 16, true, false, false)
     PngWriter png = new PngWriter((OutputStream) outputStream, imageInfo)
-    png.txtInfo.title = "QRCode"
-    png.txtInfo.author = "Shawn Hartsock"
-    png.txtInfo.software = "Grails QRCode Plugin"
-    png.txtInfo.source = this.getClass().getCanonicalName()
-    png.txtInfo.comment = "Uses ZXing (http://code.google.com/p/zxing/) and pngj (http://code.google.com/p/pngj/)"
+    PngMetadata md = png.getMetadata()
+    md.setText(PngChunkTextVar.KEY_Title, "QRCode")
+    md.setText(PngChunkTextVar.KEY_Author, "Shawn Hartsock")
+    md.setText(PngChunkTextVar.KEY_Software, "Grails QRCode Plugin")
+    md.setText(PngChunkTextVar.KEY_Source, this.getClass().getCanonicalName())
+    md.setText(PngChunkTextVar.KEY_Comment, "Uses ZXing (http://code.google.com/p/zxing/) and pngj (http://code.google.com/p/pngj/)")
 
     // loop over byte array to render but project
     // down from the image onto the smaller byte
     // matrix. Loop "y" on the outside and "x" on
     // the inside since the byte stream must "draw"
     // the image one line at a time.
-    ImageLine line = new ImageLine(png.imgInfo)
+    ImageLineInt line = new ImageLineInt(png.imgInfo)
     int channels = png.imgInfo.channels;
     assert channels == 4
     for (int ii = 0; ii < size; ii++) {
       int y = ii / scale // truncate
-      line.incRown()
       for (int jj = 0; jj < size; jj++) {
         int x = jj / scale // truncate
         double color = 1.0
         if (matrix.get(x, y)) {
           color = 0.0
         }
-        line.setValD(jj * channels, color)
-        line.setValD(jj * channels + 1, color)
-        line.setValD(jj * channels + 2, color)
+        ImageLineHelper.setValD(line, jj * channels, color)
+        ImageLineHelper.setValD(line, jj * channels + 1, color)
+        ImageLineHelper.setValD(line, jj * channels + 2, color)
       }
       addAlpha(line)
       png.writeRow(line)
-    } //*/
+    }
     png.end()
   }
 
-  private static void addAlpha(ImageLine line) {
+  private static void addAlpha(ImageLineInt line) {
     for (int i = 0; i < line.imgInfo.cols; i++) {
-      line.setValD(i * 4 + 3, 1.0);
+        ImageLineHelper.setValD(line, i * 4 + 3, 1.0);
     }
-  }
-
-  private static double clamp(double d, double d0, double d1) {
-    return d > d1 ? d1 : (d < d0 ? d0 : d);
   }
 
   /**
@@ -133,7 +136,7 @@ class QRCodeRenderer {
   String getPngContentType() { "image/png" }
 
   void renderPng(response, String data, int size) {
-    response.contentType = "image/png"
+    response.contentType = getPngContentType()
     renderPng(data, size, response.outputStream)
   }
 }

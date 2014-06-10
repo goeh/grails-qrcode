@@ -6,7 +6,7 @@ import org.apache.commons.io.IOUtils
 
 class QrCodeServiceTests extends GrailsUnitTestCase {
     QrCodeService qrCodeService
-    
+
     void testSimpleRender() {
         // a 30 by 30 png image of the word "test" in a QRCode
         InputStream pngIn =
@@ -22,5 +22,5 @@ class QrCodeServiceTests extends GrailsUnitTestCase {
         byte[] out = outputStream.toByteArray()
         assert Arrays.equals(png,out)
     }
-    
+
 }
