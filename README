@@ -4,7 +4,3 @@ your local JVM without the use of a remote webservice.
 Official Plugin Documentation:
 http://grails.org/plugin/qrcode
 
-Build Server:
-https://hartsock.ci.cloudbees.com/job/grails-qrcode/
-
-
