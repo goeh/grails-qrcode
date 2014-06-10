@@ -245,3 +245,103 @@
   - Preliminary RSS-14 support
   - Reconceived support for various image sources and thresholding
   - Other small bug fixes and performance improvements
+
+1.6 (20 Sept 2010)
+  - Many, many updates to C++, Symbian, iPhone ports
+  - RSS 14, Expanded support
+  - Code 93 support
+  - Codabar support
+  - Data Matrix support reaches release quality
+  - UPC/EAN +5 extension support
+  - Android app:
+    - Share history support
+    - Bulk scan mode
+    - Wi-fi configuration support
+    - Format available in callback for web-based integration
+    - Updated or new translations for:
+      Hungarian, Danish, Chinese, Arabic, Dutch, Slovenian, Turkish
+    - UI beautification
+  - Added ability to detect multiple barcodes per image
+  - Many small bug fixes and enhancements
+
+1.7 (8 June 2011)
+  - Initial support for Aztec codes
+  - Added the ability to read rectangular DataMatrix codes
+  - Added new lengths for ITF
+  - Dozens of bug fixes to core decoding routines
+  - New C# port
+  - Android app:
+    - Tablet support
+    - Many translations added and updated
+    - Support for new Intent parameters
+    - Many bug fixes and small features
+  - Mostly rewritten iPhone port
+  - New ZXingWidget library to include scanning in any iOS app
+  - Made CommandLineRunner multithreaded and recursive
+
+2.0 (3 Feb 2012)
+
+  - core/ has been rewritten to work with Java 6
+  - core/ has new functionality:
+    - PDF 417 encoding (from Barcode4J)
+    - Codabar encoding
+    - partial Maxicode decoding support
+  - android/ and androidtest/ have been rewritten to work with Android 2.1+
+    - Uses new camera APIs
+    - Uses new contact APIs too
+    - (See separate Barcode Scanner release notes for version 4.0)
+  - zxing.appspot.com/ has been rewritten to work with GWT 2.4
+  - cpp/, objc/ and iphone/ have received many ports of fixes and other functionality from Java, and changes to work with more recent iOS
+  - bug/, rim/, and javame/ have been removed
+  - Many, many small bug fixes and optimizations, mostly to core/ and android/
+
+2.1 (22 Oct 2012)
+
+  - Many small fixes to handling of QR code data formats, like exotic URLs, and contact info
+  - Many small fixes to decoding and detection common barcode formats, like PDF417, Aztec. Small improvements
+    too like partial error correction for PDF417
+  - Many small updates to the Android app, Barcode Scanner, including rare bug fixes and translation updates.
+    The 2.1 release corresponds substantially to v4.3.1.
+  - Many ports of Java updates to C++ port
+
+2.2 (14 May 2013)
+
+  - Retire Symbian port
+  - Retire C# port
+  - Improved PDF417 decoding, including macro PDF417
+  - Added Aztec and Data Matrix encoders
+  - Added RSS Expanded decoder
+  - Java, C++ and iPhone build system updates, including migration to Maven for most Java modules
+  - Many small fixes and improvements
+  - Many small updates to the Android app, Barcode Scanner, including rare bug fixes and translation updates.
+    The 2.2 release corresponds substantially to v4.3.2.
+  - Update zxing.org web-based decoder for Amazon Elastic Beanstalk (and redeployed there)
+  - Many ports of Java updates to C++ and C# ports
+  - Standardize test system image processing and image format for reproducibility
+
+2.3.0 (1 Dec 2013)
+
+  - Added clone of Google Chart Server QR code encoder API to zxingorg/, at endpoint /chart
+  - Updated zxing.appspot.com generator to remove deprecated API usage, use latest GWT / App Engine
+  - Added skeleton Google Glass Mirror API app
+  - Improve and standardize Maven build, standardize directories and version naming
+  - Barcode Scanner Android up requires Android 4 and is updated to use Android 4+ APIs
+  - javase/ and zxingorg/ modules now use Java 7
+  - Many small fixes and improvements
+  - (Last release including cpp/ and iphone/ code)
+
+3.0.0 (3 March 2014)
+
+  - iphone/, cpp/, objc/, and glass-mirror/ are retired
+  - Java 7 now used for all Java-based modules
+  - Project moved to github.com/zxing/zxing
+  - Many small bug fixes and improvements
+
+3.0.1 (18 April 2014)
+
+  - Several small bug fixes
+
+3.1.0 (22 May 2014)
+
+  - Retire actionscript port
+  - Small bug fixes
