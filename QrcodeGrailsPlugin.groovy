@@ -14,42 +14,23 @@
  * limitations under the License.
  */
 class QrcodeGrailsPlugin {
-    // the plugin version
     def version = "0.4"
-    // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0.0 > *"
-    // the other plugins this plugin depends on
     def dependsOn = [:]
-    // resources that are excluded from plugin packaging
     def pluginExcludes = [
             "grails-app/views/error.gsp"
     ]
-
-    def author = "Shawn Hartsock"
-    def authorEmail = "hartsock@acm.org"
+    def author = "Goran Ehrsson"
+    def authorEmail = "goran@technipelago.se"
+    def developers = [
+            [name: "Shawn Hartsock", email: "hartsock@acm.org"]
+    ]
     def title = "QR Code plugin"
     def description = '''\\
 This plugin allows you to create QR codes as part of your Grails
 application without the need for an external service.'''
-
-    // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/qrcode"
-
-    def doWithWebDescriptor = { xml ->
-    }
-
-    def doWithSpring = {
-    }
-
-    def doWithDynamicMethods = { ctx ->
-    }
-
-    def doWithApplicationContext = { applicationContext ->
-    }
-
-    def onChange = { event ->
-    }
-
-    def onConfigChange = { event ->
-    }
+    def license = "APACHE"
+    def issueManagement = [system: "github", url: "https://github.com/goeh/grails-qrcode/issues"]
+    def scm = [url: "https://github.com/goeh/grails-qrcode"]
 }
