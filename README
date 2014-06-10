@@ -1,6 +1,0 @@
-The Grails QR Code plugin allows you to render QRCodes in
-your local JVM without the use of a remote webservice.
-
-Official Plugin Documentation:
-http://grails.org/plugin/qrcode
-
