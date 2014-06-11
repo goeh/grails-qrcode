@@ -22,10 +22,17 @@ class QrcodeTagLib {
    * <qrcode:url width="96"/>
    */
   def url = { attrs ->
-    def size = attrs.height?:attrs.width
-    String target = request.getRequestURL()
-    String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size])
-    out << """<img class="qrcode" alt="${url}" src="${src}"/>"""
+      def params = takeAttributes(attrs, ['height', 'width', 'class', 'alt', 'absolute'])
+      def linkParams = [controller: 'qrcode', action: 'url']
+      def size =  params.height ?: params.width
+      def target = request.getRequestURL()
+      linkParams.params = [u: target, s: size]
+      linkParams.absolute = Boolean.valueOf(params.absolute)
+      String src = createLink(linkParams)
+      if(! params['class']) {
+          params['class'] = 'qrcode'
+      }
+      out << """<img src="${src}" class="${params['class']}" alt="${params.alt ?: target}"${renderAttributes(attrs)}/>"""
   }
 
   /**
@@ -33,10 +40,16 @@ class QrcodeTagLib {
    *  <qrcode:image text="Some arbitrary text."/>
    */
   def image = { attrs ->
-    def size = attrs.height?:attrs.width
-    String text = attrs.text
-    String src = createLink(controller:'qrcode',action:'text',params:[text:text,s:size])
-    out << """<img class="qrcode ${attrs['class'] ? attrs['class'] : ''}" alt="${attrs.alt ?: text}" src="${src}"/>"""
+      def params = takeAttributes(attrs, ['height', 'width', 'class', 'alt', 'absolute', 'text'])
+      def linkParams = [controller: 'qrcode', action: 'text']
+      def size =  params.height ?: params.width
+      linkParams.params = [text: params.text, s: size]
+      linkParams.absolute = Boolean.valueOf(params.absolute)
+      String src = createLink(linkParams)
+      if(! params['class']) {
+          params['class'] = 'qrcode'
+      }
+      out << """<img src="${src}" class="${params['class']}" alt="${params.alt ?: params.text}"${renderAttributes(attrs)}/>"""
   }
     /**
      * Example:
@@ -69,4 +82,24 @@ div.qrcodebox a.qrcodeLink:hover span.qrcodespan {
 """
     }
 
+    private Map takeAttributes(Map takeFrom, List attributeNames) {
+        def result = [:]
+        for (a in attributeNames) {
+            def v = takeFrom.remove(a)
+            if (v != null) {
+                result[a] = v
+            }
+        }
+        return result
+    }
+
+    private String renderAttributes(Map attrs) {
+        def s = new StringBuilder()
+        attrs.each { key, value ->
+            if (value != null) {
+                s << " ${key.encodeAsURL()}=\"${value.encodeAsHTML()}\""
+            }
+        }
+        s.toString()
+    }
 }

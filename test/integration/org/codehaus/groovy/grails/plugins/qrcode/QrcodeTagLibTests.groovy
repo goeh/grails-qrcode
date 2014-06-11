@@ -4,9 +4,28 @@ import grails.test.GroovyPagesTestCase
 
 class QrcodeTagLibTests extends GroovyPagesTestCase {
 
-    void testImage() {
+    void testUrl() {
+        def template = '<qrcode:url height="100" width="100"/>'
+        assert applyTemplate(template) == '<img src="/qrcode/url?u=http%3A%2F%2Flocalhost%3A80&s=100" class="qrcode" alt="http://localhost:80"/>'
+    }
 
+    void testUrlAbsolute() {
+        def template = '<qrcode:url height="100" width="100" absolute="true"/>'
+        assert applyTemplate(template) == '<img src="http://localhost/qrcode/url?u=http%3A%2F%2Flocalhost%3A80&s=100" class="qrcode" alt="http://localhost:80"/>'
+    }
+
+    void testImage() {
         def template = '<qrcode:image height="100" width="100" text="TEST TEXT"/>'
-        assert applyTemplate(template) == '<img class="qrcode " alt="TEST TEXT" src="/qrcode/text?text=TEST+TEXT&s=100"/>'
+        assert applyTemplate(template) == '<img src="/qrcode/text?text=TEST+TEXT&s=100" class="qrcode" alt="TEST TEXT"/>'
+    }
+
+    void testImageAbsolute() {
+        def template = '<qrcode:image height="100" width="100" text="TEST TEXT" absolute="true"/>'
+        assert applyTemplate(template) == '<img src="http://localhost/qrcode/text?text=TEST+TEXT&s=100" class="qrcode" alt="TEST TEXT"/>'
+    }
+
+    void testImageStyle() {
+        def template = '<qrcode:image height="100" width="100" text="TEST TEXT" style="border:1px solid black"/>'
+        assert applyTemplate(template) == '<img src="/qrcode/text?text=TEST+TEXT&s=100" class="qrcode" alt="TEST TEXT" style="border:1px solid black"/>'
     }
 }
