@@ -29,6 +29,11 @@ Render text as QRCode
 
     <qrcode:image height="100" width="100" text="TEST TEXT"/>
 
+If you want to include a QRCode image in an email and you use a GSP to render email content you must set attribute *absolute="true"*.
+Otherwise the image url will not start with *http://* and will probably not render correct.
+
+    <qrcode:image height="100" width="100" text="#648357" alt="Invoice #648357" absolute="true"/>
+
 Render current request url as QRCode
 
     <qrcode:url width="64"/>
