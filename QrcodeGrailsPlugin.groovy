@@ -29,7 +29,7 @@ class QrcodeGrailsPlugin {
     def description = '''\\
 This plugin allows you to create QR codes as part of your Grails
 application without the need for an external service.'''
-    def documentation = "http://grails.org/plugin/qrcode"
+    def documentation = "https://github.com/goeh/grails-qrcode"
     def license = "APACHE"
     def issueManagement = [system: "github", url: "https://github.com/goeh/grails-qrcode/issues"]
     def scm = [url: "https://github.com/goeh/grails-qrcode"]
