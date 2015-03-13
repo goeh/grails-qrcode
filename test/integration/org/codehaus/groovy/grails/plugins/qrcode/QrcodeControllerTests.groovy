@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils
 
 class QrcodeControllerTests extends ControllerUnitTestCase {
     QrCodeService qrCodeService
+    QrcodeController controller = new QrcodeController()
 
     void testSimpleRender() {
         controller.qrCodeService = qrCodeService
@@ -23,7 +24,7 @@ class QrcodeControllerTests extends ControllerUnitTestCase {
         byte[] png = IOUtils.toByteArray(pngIn)
 
         assert png != null
-        
+
         assert Arrays.equals(png,out)
     }
 }

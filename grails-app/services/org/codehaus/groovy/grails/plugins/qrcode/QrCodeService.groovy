@@ -29,4 +29,5 @@ package org.codehaus.groovy.grails.plugins.qrcode
  */
 class QrCodeService extends QRCodeRenderer {
     static scope = 'prototype'
+    static transactional = false
 }

@@ -96,7 +96,7 @@ class QRCodeRenderer {
     md.setText(PngChunkTextVar.KEY_Author, "Shawn Hartsock")
     md.setText(PngChunkTextVar.KEY_Software, "Grails QRCode Plugin")
     md.setText(PngChunkTextVar.KEY_Source, this.getClass().getCanonicalName())
-    md.setText(PngChunkTextVar.KEY_Comment, "Uses ZXing (http://code.google.com/p/zxing/) and pngj (http://code.google.com/p/pngj/)")
+    md.setText(PngChunkTextVar.KEY_Comment, "Uses ZXing (https://github.com/zxing/zxing) and pngj (https://github.com/leonbloy/pngj)")
 
     // loop over byte array to render but project
     // down from the image onto the smaller byte
@@ -111,7 +111,7 @@ class QRCodeRenderer {
       for (int jj = 0; jj < size; jj++) {
         int x = jj / scale // truncate
         double color = 1.0
-        if (matrix.get(x, y)) {
+        if (x < cols && y < cols && matrix.get(x, y)) {
           color = 0.0
         }
         ImageLineHelper.setValD(line, jj * channels, color)

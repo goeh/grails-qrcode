@@ -6,12 +6,12 @@ class QrcodeTagLibTests extends GroovyPagesTestCase {
 
     void testUrl() {
         def template = '<qrcode:url height="100" width="100"/>'
-        assert applyTemplate(template) == '<img src="/qrcode/url?u=http%3A%2F%2Flocalhost%3A80&s=100" class="qrcode" alt="http://localhost:80"/>'
+        assert applyTemplate(template) == '<img src="/qrcode/url?u=http%3A%2F%2Flocalhost&s=100" class="qrcode" alt="http://localhost"/>'
     }
 
     void testUrlAbsolute() {
         def template = '<qrcode:url height="100" width="100" absolute="true"/>'
-        assert applyTemplate(template) == '<img src="http://localhost/qrcode/url?u=http%3A%2F%2Flocalhost%3A80&s=100" class="qrcode" alt="http://localhost:80"/>'
+        assert applyTemplate(template) == '<img src="http://localhost/qrcode/url?u=http%3A%2F%2Flocalhost&s=100" class="qrcode" alt="http://localhost"/>'
     }
 
     void testImage() {
