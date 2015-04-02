@@ -1,10 +1,9 @@
 package org.codehaus.groovy.grails.plugins.qrcode
 
-import grails.test.ControllerUnitTestCase
 import org.apache.commons.io.IOUtils
 import org.springframework.core.io.ClassPathResource
 
-class QrcodeControllerTests extends ControllerUnitTestCase {
+class QrcodeControllerTests extends GroovyTestCase {
     QrCodeService qrCodeService
     QrcodeController controller = new QrcodeController()
 
