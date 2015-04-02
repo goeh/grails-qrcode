@@ -16,19 +16,13 @@
 class QrcodeGrailsPlugin {
     def version = "0.7"
     def grailsVersion = "2.0.0 > *"
-    def dependsOn = [:]
-    def pluginExcludes = [
-            "grails-app/views/error.gsp"
-    ]
     def author = "Goran Ehrsson"
     def authorEmail = "goran@technipelago.se"
     def developers = [
             [name: "Shawn Hartsock", email: "hartsock@acm.org"]
     ]
     def title = "QR Code plugin"
-    def description = '''\\
-This plugin allows you to create QR codes as part of your Grails
-application without the need for an external service.'''
+    def description = 'Allows you to create QR codes as part of your application without the need for an external service.'
     def documentation = "https://github.com/goeh/grails-qrcode"
     def license = "APACHE"
     def issueManagement = [system: "github", url: "https://github.com/goeh/grails-qrcode/issues"]

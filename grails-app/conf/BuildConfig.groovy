@@ -1,19 +1,17 @@
-grails.project.class.dir = "target/classes"
-grails.project.test.class.dir = "target/test-classes"
-grails.project.test.reports.dir = "target/test-reports"
-grails.project.target.level = 1.6
-
-grails.project.fork = false
+grails.project.work.dir = 'target'
 
 grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
-    inherits("global")
+
+    inherits 'global'
+    log 'warn'
 
     repositories {
-        grailsCentral()
         mavenLocal()
+        grailsCentral()
         mavenCentral()
     }
+
     dependencies {
         compile "ar.com.hjg:pngj:2.1.0"
         compile "com.google.zxing:core:3.2.0"

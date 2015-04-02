@@ -16,7 +16,6 @@ package org.codehaus.groovy.grails.plugins.qrcode
  */
 
 /**
- * @Author Shawn Hartsock
  * This is a prototype scoped service. That means that each new reference
  * to this service is a new copy. That's fine in this case as the service
  * is completely free of any request, session, or thread related concerns.
@@ -26,6 +25,8 @@ package org.codehaus.groovy.grails.plugins.qrcode
  * The previous version created a new instance of this renderer on each
  * request. That's because this POGO is at least as light weight as a Closure
  * and we got new instances of each closure on every request as well.
+ *
+ * @author Shawn Hartsock
  */
 class QrCodeService extends QRCodeRenderer {
     static scope = 'prototype'

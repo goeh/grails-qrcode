@@ -1,8 +1,8 @@
 package org.codehaus.groovy.grails.plugins.qrcode
 
-import grails.test.*
-import org.springframework.core.io.ClassPathResource
+import grails.test.ControllerUnitTestCase
 import org.apache.commons.io.IOUtils
+import org.springframework.core.io.ClassPathResource
 
 class QrcodeControllerTests extends ControllerUnitTestCase {
     QrCodeService qrCodeService
@@ -14,16 +14,15 @@ class QrcodeControllerTests extends ControllerUnitTestCase {
         controller.params.size = '30'
         controller.index()
 
-        assertEquals "image/png", controller.response.contentType
-        assertEquals 200, controller.response.status
+        assert "image/png" == controller.response.contentType
+        assert 200 == controller.response.status
 
         byte[] out = controller.response.contentAsByteArray
         // a 30 by 30 png image of the word "test" in a QRCode
-        InputStream pngIn =
-            new ClassPathResource("org/codehaus/groovy/grails/plugins/qrcode/qrcode.png").getInputStream()
+        InputStream pngIn = new ClassPathResource("org/codehaus/groovy/grails/plugins/qrcode/qrcode.png").inputStream
         byte[] png = IOUtils.toByteArray(pngIn)
 
-        assert png != null
+        assert png
 
         assert Arrays.equals(png,out)
     }
