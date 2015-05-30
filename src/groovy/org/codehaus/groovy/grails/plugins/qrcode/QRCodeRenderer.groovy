@@ -67,9 +67,13 @@ class QRCodeRenderer {
    * Renders the data supplied in a QRCode of the pixel size (width == height)
    * on the output stream you specify as a PNG.
    */
-  void renderPng(String data, int requestedSize, OutputStream outputStream) {
-    Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(2);
-    hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+  void renderPng(String data, int requestedSize, OutputStream outputStream, String charSet = null) {
+
+    Hashtable<EncodeHintType, String> hints = null;
+    if (charSet != null) {
+      hints = new Hashtable<EncodeHintType, String>(2);
+      hints.put(EncodeHintType.CHARACTER_SET, charSet);
+    }
 
     int size = calculateMatrixSize(data)
     BitMatrix matrix = qrcodeWriter.encode(data, format, size, size, hints)
