@@ -39,7 +39,7 @@ Render text QRCode in 30x30px
 
     .../qrcode/text?w=30&text=test
 
-![QRCode](test/resources/qrcode.png)
+![QRCode](src/test/resources/qrcode.png)
 
     Render url QRCode
 
