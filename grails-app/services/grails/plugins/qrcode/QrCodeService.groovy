@@ -1,7 +1,4 @@
 package grails.plugins.qrcode
-
-import org.codehaus.groovy.grails.plugins.qrcode.QRCodeRenderer
-
 /**
  * Copyright (C) 2010 Shawn Hartsock
  *

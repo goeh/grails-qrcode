@@ -11,14 +11,11 @@ buildscript {
     }
 }
 
-version "0.1"
+version "0.8-SNAPSHOT"
 group "qrcode"
 
-apply plugin: "eclipse"
-apply plugin: "idea"
 apply plugin: "org.grails.grails-plugin"
 apply plugin: "org.grails.grails-plugin-publish"
-apply plugin: "org.grails.grails-gsp"
 
 ext {
     grailsVersion = project.grailsVersion
@@ -41,21 +38,14 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
-    console "org.grails:grails-console"
-    testCompile "org.grails:grails-plugin-testing"
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
     compile "org.grails:grails-dependencies"
-    compile "org.grails:grails-web-boot"
-    compile "org.grails.plugins:cache"
-    compile "org.grails.plugins:scaffolding"
 
     compile "ar.com.hjg:pngj:2.1.0"
     compile "com.google.zxing:core:3.2.0"
 
-    testCompile "org.grails.plugins:geb"
-    testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-    testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+    testCompile "org.grails:grails-plugin-testing"
 }
 
 task wrapper(type: Wrapper) {

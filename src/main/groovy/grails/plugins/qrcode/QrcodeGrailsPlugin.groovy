@@ -15,9 +15,10 @@
  */
 package grails.plugins.qrcode
 
-class QrcodeGrailsPlugin {
-    def version = "0.7"
-    def grailsVersion = "2.0.0 > *"
+import grails.plugins.Plugin
+
+class QrcodeGrailsPlugin extends Plugin {
+    def grailsVersion = "3.0.0 > *"
     def dependsOn = [:]
     def pluginExcludes = [
             "grails-app/views/error.gsp"
