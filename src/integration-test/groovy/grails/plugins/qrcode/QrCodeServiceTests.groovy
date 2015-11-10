@@ -1,4 +1,4 @@
-package org.codehaus.groovy.grails.plugins.qrcode
+package grails.plugins.qrcode
 
 import grails.test.GrailsUnitTestCase
 import org.springframework.core.io.ClassPathResource

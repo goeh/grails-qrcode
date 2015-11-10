@@ -1,4 +1,4 @@
-package org.codehaus.groovy.grails.plugins.qrcode
+package grails.plugins.qrcode
 /**
  * Copyright (C) 2010 Shawn Hartsock
  *

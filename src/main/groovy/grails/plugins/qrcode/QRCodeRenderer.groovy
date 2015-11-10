@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.groovy.grails.plugins.qrcode
+package grails.plugins.qrcode
 
 import ar.com.hjg.pngj.ImageLineHelper
 import ar.com.hjg.pngj.ImageLineInt
