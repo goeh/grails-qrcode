@@ -1,41 +1,49 @@
 *.log
+*.zip
+*.class
+target/
+docs/
+*.js
+*.gif
+*.jpg
+*.ico
+*.css
+*.html
+*.tld
+web-app/WEB-INF/applicationContext.xml
+web-app/WEB-INF/sitemesh.xml
+/plugin.xml
+.DS_Store
 
+### Intellij ###
+*.iml
 .idea/
 
-*.iml
+## File-based project format:
+*.ipr
+*.iws
 
-*.zip
+## Plugin-specific files:
+# IntelliJ
+/out/
 
-*.class
+# mpeltonen/sbt-idea plugin
+.idea_modules/
 
-target/
+# JIRA plugin
+atlassian-ide-plugin.xml
 
-docs/
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
 
-grails-app/conf/*
+### Gradle ###
+.gradle
+build/
 
-*.properties
+# Ignore Gradle GUI config
+gradle-app.setting
 
-*.js
-
-*.png
-
-*.gif
-
-*.jpg
-
-*.ico
-
-*.css
-
-*.html
-
-*.tld
-
-web-app/WEB-INF/applicationContext.xml
-
-web-app/WEB-INF/sitemesh.xml
-
-/plugin.xml
-
-.DS_Store
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
