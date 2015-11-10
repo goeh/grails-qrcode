@@ -16,25 +16,20 @@
 
 package grails.plugins.qrcode
 
+import ar.com.hjg.pngj.ImageInfo
 import ar.com.hjg.pngj.ImageLineHelper
 import ar.com.hjg.pngj.ImageLineInt
+import ar.com.hjg.pngj.PngWriter
 import ar.com.hjg.pngj.chunks.PngChunkTextVar
 import ar.com.hjg.pngj.chunks.PngMetadata
 
-
-import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.BarcodeFormat
-import com.google.zxing.common.BitMatrix
-
-import ar.com.hjg.pngj.ImageInfo
-import ar.com.hjg.pngj.PngWriter
 import com.google.zxing.EncodeHintType
+import com.google.zxing.common.BitMatrix
+import com.google.zxing.qrcode.QRCodeWriter
 
 /**
- * @author "Shawn Hartsock" <hartsock@acm.org>
- * @author "Goran Ehrsson" <goran@technipelago.se>
- *
- * This class uses the native JDK and Groovy libraries to render the
+ * Uses the native JDK and Groovy libraries to render the
  * byte matrix returned by the QRCodeWriter in the ZXing libraries
  * using the PngWriter libraries provided by pngj. These libraries
  * use only white listed Google Approved classes to create PNG images.
@@ -42,6 +37,8 @@ import com.google.zxing.EncodeHintType
  * The object is defined with sensible defaults that you may choose
  * to override in your constructor.
  *
+ * @author "Shawn Hartsock" <hartsock@acm.org>
+ * @author "Goran Ehrsson" <goran@technipelago.se>
  */
 class QRCodeRenderer {
   QRCodeWriter qrcodeWriter = new QRCodeWriter()
@@ -57,10 +54,7 @@ class QRCodeRenderer {
    * You will have to scale the image up or down to fit.
    */
   int calculateMatrixSize(String data) {
-    def length = data.length()
-    def sqr = Math.sqrt(length)
-    int size = Math.round(sqr + 0.5)
-    return size
+    return Math.round(Math.sqrt(data.length()) + 0.5)
   }
 
   /**
@@ -68,8 +62,7 @@ class QRCodeRenderer {
    * on the output stream you specify as a PNG.
    */
   void renderPng(String data, int requestedSize, OutputStream outputStream) {
-    Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>(2);
-    hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+    Hashtable<EncodeHintType, String> hints = [(EncodeHintType.CHARACTER_SET): "UTF-8"]
 
     int size = calculateMatrixSize(data)
     BitMatrix matrix = qrcodeWriter.encode(data, format, size, size, hints)
@@ -86,16 +79,16 @@ class QRCodeRenderer {
   void renderMatrix(BitMatrix matrix, int size, OutputStream outputStream) {
     assert size > 0
     int cols = matrix.width
-    double scale = size / cols;
+    double scale = size / cols
 
     // setup the image preamble
     def imageInfo = new ImageInfo(size, size, 16, true, false, false)
-    PngWriter png = new PngWriter((OutputStream) outputStream, imageInfo)
-    PngMetadata md = png.getMetadata()
+    PngWriter png = new PngWriter(outputStream, imageInfo)
+    PngMetadata md = png.metadata
     md.setText(PngChunkTextVar.KEY_Title, "QRCode")
     md.setText(PngChunkTextVar.KEY_Author, "Shawn Hartsock")
     md.setText(PngChunkTextVar.KEY_Software, "Grails QRCode Plugin")
-    md.setText(PngChunkTextVar.KEY_Source, this.getClass().getCanonicalName())
+    md.setText(PngChunkTextVar.KEY_Source, getClass().canonicalName)
     md.setText(PngChunkTextVar.KEY_Comment, "Uses ZXing (https://github.com/zxing/zxing) and pngj (https://github.com/leonbloy/pngj)")
 
     // loop over byte array to render but project
@@ -104,15 +97,15 @@ class QRCodeRenderer {
     // the inside since the byte stream must "draw"
     // the image one line at a time.
     ImageLineInt line = new ImageLineInt(png.imgInfo)
-    int channels = png.imgInfo.channels;
+    int channels = png.imgInfo.channels
     assert channels == 4
     for (int ii = 0; ii < size; ii++) {
       int y = ii / scale // truncate
       for (int jj = 0; jj < size; jj++) {
         int x = jj / scale // truncate
-        double color = 1.0
+        double color = 1
         if (x < cols && y < cols && matrix.get(x, y)) {
-          color = 0.0
+          color = 0
         }
         ImageLineHelper.setValD(line, jj * channels, color)
         ImageLineHelper.setValD(line, jj * channels + 1, color)
@@ -126,7 +119,7 @@ class QRCodeRenderer {
 
   private static void addAlpha(ImageLineInt line) {
     for (int i = 0; i < line.imgInfo.cols; i++) {
-        ImageLineHelper.setValD(line, i * 4 + 3, 1.0);
+        ImageLineHelper.setValD(line, i * 4 + 3, 1.0)
     }
   }
 

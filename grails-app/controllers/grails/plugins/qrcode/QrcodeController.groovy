@@ -14,43 +14,41 @@ package grails.plugins.qrcode
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// NOTE: using closures to maintain backwards compatibility with Grails 1.3.7
 class QrcodeController {
+
   static final String backupText = "This qrcode was rendered by http://grails.org/plugin/qrcode"
+
   QrCodeService qrCodeService
 
   /**
-   * Renders a QRCode that contains the Referer URL that you just came from
+   * Renders a QRCode that contains the Referer URL that you just came from.
    */
-  def index = {
-    def referer = request.getHeader("REFERER")
-    String size = getSize(params)
-    qrCodeService.renderPng(response,params.url?:params.text?:referer?:backupText, size?.toInteger())
+  def index(String url, String text) {
+    renderPng(url ?: text ?: request.getHeader("REFERER") ?: backupText)
   }
 
   /**
-   * Renders a QRCode with the URL specified
+   * Renders a QRCode with the URL specified.
    */
-  def url = {
-    String uri = params.u?:params.id?:request.getHeader("REFERER")
-    String size = getSize(params)
-    qrCodeService.renderPng(response, uri, size.toInteger().intValue())
-  }
-
-  private String getSize(Map params) {
-    String size = params.s?:params.size?:params.w?:params.width
-    if (!size || size.matches(/\D/)) { size = "300"}
-    return size
+  def url(String u, String id) {
+    renderPng(u ?: id ?: request.getHeader("REFERER"))
   }
 
   /**
    * Renders a QRCode containing arbitrary text. This can
    * include iCal or vCard data or whatever you can come up with.
    */
-  def text = {
-    String content = params.text?:params.id
-    String size = getSize(params)
-    qrCodeService.renderPng(response, content, size.toInteger().intValue())
+  def text(String text, String id) {
+    renderPng(text ?: id)
   }
-  
+
+  private int getSize(Map params) {
+    String size = params.s ?: params.size ?: params.w ?: params.width
+    if (!size || size.matches(/\D/)) { size = "300"}
+    return size as int
+  }
+
+  protected void renderPng(String data) {
+    qrCodeService.renderPng(response, data, getSize(params))
+  }
 }

@@ -15,6 +15,7 @@ package grails.plugins.qrcode
  * limitations under the License.
  */
 class QrcodeTagLib {
+
   static namespace = "qrcode"
 
   /**
@@ -25,14 +26,12 @@ class QrcodeTagLib {
       def params = takeAttributes(attrs, ['height', 'width', 'class', 'alt', 'absolute'])
       def linkParams = [controller: 'qrcode', action: 'url']
       def size =  params.height ?: params.width
-      def target = request.getRequestURL()
+      def target = request.requestURL
       linkParams.params = [u: target, s: size]
       linkParams.absolute = Boolean.valueOf(params.absolute)
       String src = createLink(linkParams)
-      if(! params['class']) {
-          params['class'] = 'qrcode'
-      }
-      out << """<img src="${src}" class="${params['class']}" alt="${params.alt ?: target}"${renderAttributes(attrs)}/>"""
+      String cssClass = params['class'] ?: 'qrcode'
+      out << """<img src="${src}" class="$cssClass" alt="${params.alt ?: target}"${renderAttributes(attrs)}/>"""
   }
 
   /**
@@ -46,21 +45,20 @@ class QrcodeTagLib {
       linkParams.params = [text: params.text, s: size]
       linkParams.absolute = Boolean.valueOf(params.absolute)
       String src = createLink(linkParams)
-      if(! params['class']) {
-          params['class'] = 'qrcode'
-      }
-      out << """<img src="${src}" class="${params['class']}" alt="${params.alt ?: params.text}"${renderAttributes(attrs)}/>"""
+      String cssClass = params['class'] ?: 'qrcode'
+      out << """<img src="${src}" class="$cssClass" alt="${params.alt ?: params.text}"${renderAttributes(attrs)}/>"""
   }
-    /**
-     * Example:
-     *  <qrcode:link label="my text" />
-     */
-    def link = { attrs ->
-        def label = attrs.label?:"qrlink"
-        def size = attrs.height?:attrs.width
-        String target = request.getRequestURL()
-        String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size])
-        out << '''<style>
+
+  /**
+   * Example:
+   *  <qrcode:link label="my text" />
+   */
+  def link = { attrs ->
+      def label = attrs.label?:"qrlink"
+      def size = attrs.height?:attrs.width
+      String target = request.getRequestURL()
+      String src = createLink(controller:'qrcode',action:'url',params:[u:target,s:size])
+      out << '''<style>
 div.qrcodebox span.qrcodespan {
 	display: none;
 	position: absolute;
@@ -71,7 +69,7 @@ div.qrcodebox a.qrcodeLink:hover span.qrcodespan {
 }
 </style>
 '''
-        out << """
+      out << """
     <div class="qrcodebox">
         <a class="qrcodeLink" href="javascript:null">${label}
             <span class="qrcodespan">
@@ -80,14 +78,14 @@ div.qrcodebox a.qrcodeLink:hover span.qrcodespan {
         </a>
     </div>
 """
-    }
+  }
 
     private Map takeAttributes(Map takeFrom, List attributeNames) {
         def result = [:]
-        for (a in attributeNames) {
-            def v = takeFrom.remove(a)
+        for (String name in attributeNames) {
+            def v = takeFrom.remove(name)
             if (v != null) {
-                result[a] = v
+                result[name] = v
             }
         }
         return result
@@ -100,6 +98,6 @@ div.qrcodebox a.qrcodeLink:hover span.qrcodespan {
                 s << " ${key.encodeAsURL()}=\"${value.encodeAsHTML()}\""
             }
         }
-        s.toString()
+        s
     }
 }
