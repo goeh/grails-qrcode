@@ -16,7 +16,7 @@ package grails.plugins.qrcode
  */
 class QrcodeController {
 
-  static final String backupText = "This qrcode was rendered by http://grails.org/plugin/qrcode"
+  public static final String BACKUP_TEXT = "This qrcode was rendered by http://grails.org/plugin/qrcode"
 
   QrCodeService qrCodeService
 
@@ -24,7 +24,7 @@ class QrcodeController {
    * Renders a QRCode that contains the Referer URL that you just came from.
    */
   def index(String url, String text) {
-    renderPng(url ?: text ?: request.getHeader("REFERER") ?: backupText)
+    renderPng(url ?: text ?: request.getHeader("REFERER") ?: BACKUP_TEXT)
   }
 
   /**

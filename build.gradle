@@ -4,18 +4,18 @@ buildscript {
     }
     repositories {
         mavenLocal()
-        maven { url "https://repo.grails.org/grails/core" }
+        maven { url 'https://repo.grails.org/grails/core' }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
     }
 }
 
-version "0.8-SNAPSHOT"
-group "qrcode"
+version '0.8-SNAPSHOT'
+group 'org.grails.plugins'
 
-apply plugin: "org.grails.grails-plugin"
-apply plugin: "org.grails.grails-plugin-publish"
+apply plugin: 'org.grails.grails-plugin'
+apply plugin: 'org.grails.grails-plugin-publish'
 
 ext {
     grailsVersion = project.grailsVersion
@@ -24,7 +24,7 @@ ext {
 
 repositories {
     mavenLocal()
-    maven { url "https://repo.grails.org/grails/core" }
+    maven { url 'https://repo.grails.org/grails/core' }
 }
 
 dependencyManagement {
@@ -35,17 +35,17 @@ dependencyManagement {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-logging"
-    compile "org.springframework.boot:spring-boot-autoconfigure"
-    compile "org.grails:grails-core"
-    compile "org.springframework.boot:spring-boot-starter-actuator"
-    compile "org.springframework.boot:spring-boot-starter-tomcat"
-    compile "org.grails:grails-dependencies"
+    compile 'org.springframework.boot:spring-boot-starter-logging'
+    compile 'org.springframework.boot:spring-boot-autoconfigure'
+    compile 'org.grails:grails-core'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-tomcat'
+    compile 'org.grails:grails-dependencies'
 
-    compile "ar.com.hjg:pngj:2.1.0"
-    compile "com.google.zxing:core:3.2.0"
+    compile 'ar.com.hjg:pngj:2.1.0'
+    compile 'com.google.zxing:core:3.2.0'
 
-    testCompile "org.grails:grails-plugin-testing"
+    testCompile 'org.grails:grails-plugin-testing'
 }
 
 task wrapper(type: Wrapper) {
