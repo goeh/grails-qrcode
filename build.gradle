@@ -4,6 +4,7 @@ buildscript {
     }
     repositories {
         mavenLocal()
+        jcenter()
         maven { url 'https://repo.grails.org/grails/core' }
     }
     dependencies {
@@ -11,11 +12,17 @@ buildscript {
     }
 }
 
-version '0.8-SNAPSHOT'
+version '0.8'
 group 'org.grails.plugins'
 
 apply plugin: 'org.grails.grails-plugin'
-apply plugin: 'org.grails.grails-plugin-publish'
+
+if (version.endsWith('-SNAPSHOT')) {
+    apply plugin: 'maven-publish'
+    //apply plugin: 'maven'
+} else {
+    apply plugin: 'org.grails.grails-plugin-publish'
+}
 
 ext {
     grailsVersion = project.grailsVersion
@@ -52,16 +59,85 @@ task wrapper(type: Wrapper) {
     gradleVersion = gradleWrapperVersion
 }
 
-grailsPublish {
-    user = 'user'
-    key = 'key'
-    userOrg = 'my-company' // optional, otherwise published to personal bintray account
-    repo = 'plugins' // optional, defaults to 'plugins'
+if (version.endsWith('-SNAPSHOT')) {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                artifactId 'qrcode'
+                pom.withXml {
+                    def pomNode = asNode()
+                    pomNode.children().last() + {
+                        resolveStrategy = Closure.DELEGATE_FIRST
+                        name 'qrcode'
+                        description 'A plugin that allows you to create QR codes as part of your Grails application without the need for an external service'
+                        url 'https://github.com/goeh/grails-qrcode'
+                        scm {
+                            url 'https://github.com/goeh/grails-qrcode'
+                            connection 'scm:https://goeh@github.com/goeh/grails-qrcode.git'
+                            developerConnection 'scm:git://github.com/goeh/grails-qrcode.git'
+                        }
+                        licenses {
+                            license {
+                                name 'The Apache Software License, Version 2.0'
+                                url 'http://www.apache.org/license/LICENSE-2.0.txt'
+                                distribution 'repo'
+                            }
+                        }
+                        developers {
+                            developer {
+                                id 'goeh'
+                                name 'Goran Ehrsson'
+                                email 'goran@technipelago.se'
+                            }
+                        }
+                    }
 
+                    pomNode.dependencyManagement.replaceNode {}
 
-    websiteUrl = 'http://foo.com/myplugin'
-    license = 'APACHE 2.0'
-    issueTrackerUrl = 'http://github.com/myname/myplugin/issues'
-    vcsUrl = 'http://github.com/myname/myplugin'
-    desc = "My plugin description"
+                    // simply remove dependencies without a version
+                    // version-less dependencies are handled with dependencyManagement
+                    // see https://github.com/spring-gradle-plugins/dependency-management-plugin/issues/8 for more complete solutions
+                    pomNode.dependencies.dependency.findAll {
+                        it.version.text().isEmpty()
+                    }.each {
+                        it.replaceNode {}
+                    }
+
+                }
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+                artifact source: "${sourceSets.main.output.classesDir}/META-INF/grails-plugin.xml",
+                        classifier: "plugin",
+                        extension: 'xml'
+            }
+        }
+
+        repositories {
+            maven {
+                credentials {
+                    username System.getenv('ARTIFACTORY_USERNAME') ?: project.properties.get('artifactoryPublishUsername')
+                    password System.getenv('ARTIFACTORY_PASSWORD') ?: project.properties.get('artifactoryPublishPassword')
+                }
+                url System.getenv('ARTIFACTORY_URL') ?: project.properties.get('artifactoryPublishUrl')
+            }
+        }
+    }
+} else {
+    grailsPublish {
+        if(project.hasProperty('bintrayUser')) {
+            user = bintrayUser
+            key = bintrayKey
+            userOrg = bintrayOrg
+            repo = bintrayRepo
+        } else {
+            user = System.getenv('BINTRAY_USER')
+            key = System.getenv('BINTRAY_KEY')
+            userOrg = System.getenv('BINTRAY_ORG')
+            repo = System.getenv('BINTRAY_REPO')
+        }
+        githubSlug = 'goeh/grails-qrcode'
+        desc = "A plugin that allows you to create QR codes as part of your Grails application without the need for an external service"
+        license = 'Apache-2.0'
+    }
 }
