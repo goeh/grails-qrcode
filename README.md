@@ -1,5 +1,33 @@
 This plugin allows you to create QR codes as part of your Grails
 application without the need for an external service.
+# Installation 
+
+For Grails 2 use version 0.7, for Grails 3 use version 0.8.
+ 
+## Grails 2
+
+Add a dependency in BuildConfig.groovy:
+
+```groovy
+grails.project.dependency.resolution = {
+  // ...
+  plugins {
+    compile ':qrcode:0.7'
+    // ...
+  }
+}
+```
+
+## Grails 3
+
+Add a dependency in build.gradle
+
+```groovy
+compile 'org.grails.plugins:qrcode:0.8'
+```
+
+
+# Usage
 
 ## QrcodeController
 
@@ -11,7 +39,7 @@ Render text QRCode in 30x30px
 
     .../qrcode/text?w=30&text=test
 
-![QRCode](test/integration/org/codehaus/groovy/grails/plugins/qrcode/qrcode.png)
+![QRCode](src/test/resources/qrcode.png)
 
     Render url QRCode
 
