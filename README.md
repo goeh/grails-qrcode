@@ -23,7 +23,7 @@ grails.project.dependency.resolution = {
 Add a dependency in build.gradle
 
 ```groovy
-compile 'org.grails.plugins:qrcode:0.8'
+compile 'org.grails.plugins:qrcode:0.9'
 ```
 
 
@@ -48,6 +48,8 @@ Render text QRCode in 30x30px
 ### Configuration
 
 The maximum value of the *width* parameter can be configured with *qrcode.size.max* (default 1024).
+
+    qrcode.size.max = 2048
 
 ## QrCodeService
 
@@ -102,10 +104,10 @@ This QRCode can be scanned with a smartphone and imported as a contact.
 
 ## Changes
 
-*Version 0.9*: Prevent DoS attempts using large size/width values
+Version 0.9: Prevent DoS attempts using large size/width values.
 
-*Version 0.8*: Grails 3 support
+Version 0.8: Grails 3 support.
 
-*Version 0.7*: Upgraded zxing dependency to 3.2.0
+Version 0.7: Upgraded zxing dependency to 3.2.0.
 
-*Version 0.6*: Upgraded pngj dependency to 2.1.0
+Version 0.6: Upgraded pngj dependency to 2.1.0.
