@@ -45,7 +45,13 @@ class QrcodeController {
   private int getSize(Map params) {
     String size = params.s ?: params.size ?: params.w ?: params.width
     if (!size || size.matches(/\D/)) { size = "300"}
-    return size as int
+    int wantedSize = size as int
+    int maxSize = grailsApplication.config.qrcode.size.max ?: 1024
+    // make sure the specified size is within reasonable limits, to avoid DoS attacks.
+    if (wantedSize > maxSize) {
+      throw new RuntimeException("invalid size: " + wantedSize)
+    }
+    return wantedSize
   }
 
   protected void renderPng(String data) {

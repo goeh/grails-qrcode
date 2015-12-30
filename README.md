@@ -1,9 +1,9 @@
 This plugin allows you to create QR codes as part of your Grails
 application without the need for an external service.
-# Installation 
+# Installation
 
-For Grails 2 use version 0.7, for Grails 3 use version 0.8.
- 
+For Grails 2 use version 0.7, for Grails 3 use version 0.8+.
+
 ## Grails 2
 
 Add a dependency in BuildConfig.groovy:
@@ -44,6 +44,10 @@ Render text QRCode in 30x30px
     Render url QRCode
 
     .../qrcode/url?u=http://grails.org/plugin/qrcode
+
+### Configuration
+
+The maximum value of the *width* parameter can be configured with *qrcode.size.max* (default 1024).
 
 ## QrCodeService
 
@@ -95,3 +99,13 @@ Now it's easy to render a QRCode of the contact information.
 This QRCode can be scanned with a smartphone and imported as a contact.
 
     <qrcode:image height="150" text="${person.vcard}" alt="${person.fullName} ${person.address} ${person.city}"/>
+
+## Changes
+
+*Version 0.9*: Prevent DoS attempts using large size/width values
+
+*Version 0.8*: Grails 3 support
+
+*Version 0.7*: Upgraded zxing dependency to 3.2.0
+
+*Version 0.6*: Upgraded pngj dependency to 2.1.0

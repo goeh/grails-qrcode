@@ -12,7 +12,7 @@ buildscript {
     }
 }
 
-version '0.8'
+version '0.9'
 group 'org.grails.plugins'
 
 apply plugin: 'org.grails.grails-plugin'
